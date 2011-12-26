@@ -27,7 +27,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ucommand_option.mli,v 1.2 2007-10-16 08:01:25 fclement Exp $ *)
+(* $Id: ucommand_option.mli,v 1.4 2011-01-04 19:15:22 qcarbonn Exp $ *)
 
 (** The module to handle options in the command line of the program.
    
@@ -70,6 +70,15 @@ val all : unit -> t list;;
 
 val parse : Arg.anon_fun -> Arg.usage_msg -> unit;;
 (** [parse af msg] parses the command line to treat command options. *)
+
+val parse_argv : string array -> Arg.anon_fun -> Arg.usage_msg -> unit;;
+(** [parse_argv l af msg] parses the string array [l] to treat command
+   options. *)
+
+val usage : Arg.usage_msg -> unit
+(** [usage msg] prints an error message including the list of valid
+   options. This is the same message as {!parse} prints in case of
+   error. [msg] is the same as for [parse] *)
 
 (** {6 Advanced command options} *)
 

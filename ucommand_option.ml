@@ -27,18 +27,20 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ucommand_option.ml,v 1.4 2008-07-18 21:52:02 fclement Exp $ *)
+(* $Id: ucommand_option.ml,v 1.7 2011-01-04 19:15:22 qcarbonn Exp $ *)
 
 (* Regular command options. *)
 
 type t = {
-    key : Arg.key;
-    spec : Arg.spec;
-    doc : Arg.doc;
-  };;
+  key : Arg.key;
+  spec : Arg.spec;
+  doc : Arg.doc;
+}
+;;
+
 type command_option = t;;
 
-let triple_of_command_option {key = k; spec = s; doc = d} = k, s, d;;
+let triple_of_command_option { key = k; spec = s; doc = d } = k, s, d;;
 
 let regular_options = ref [];;
 
@@ -50,7 +52,18 @@ let all () = List.rev !regular_options;;
 
 let parse af msg =
   let opts = List.rev !regular_options in
-  Arg.parse (List.map triple_of_command_option opts) af msg;;
+  Arg.parse (List.map triple_of_command_option opts) af msg
+;;
+
+let parse_argv argv af msg =
+  let opts = List.rev !regular_options in
+  Arg.parse_argv argv (List.map triple_of_command_option opts) af msg
+;;
+
+let usage msg =
+  let opts = List.rev !regular_options in
+  Arg.usage (List.map triple_of_command_option opts) msg
+;;
 
 (* Advanced command options. *)
 
@@ -70,30 +83,33 @@ let user_options = ref [];;
 
 let add_user (t, s) =
   user_options := t :: !user_options;
-  add {t with spec = s};;
+  add { t with spec = s; }
+;;
 
 let is_user_option k = List.exists (fun opt -> opt.key = k) !user_options;;
 
 let report_specs = ref []
-and debug_specs = ref [];;
+and debug_specs = ref []
+;;
 
 let launch_report_specs () = List.iter (fun spec -> spec ()) !report_specs
-and launch_debug_specs () = List.iter (fun spec -> spec ()) !debug_specs;;
+and launch_debug_specs () = List.iter (fun spec -> spec ()) !debug_specs
+;;
 
 let add_unit_spec f = function
-| Arg.Unit spec -> f spec
-| Arg.Bool _
-| Arg.Set _
-| Arg.Clear _
-| Arg.String _
-| Arg.Set_string _
-| Arg.Int _
-| Arg.Set_int _
-| Arg.Float _
-| Arg.Set_float _
-| Arg.Tuple _
-| Arg.Symbol _
-| Arg.Rest _ -> invalid_arg "add_unit_spec: not a unit argument"
+  | Arg.Unit spec -> f spec
+  | Arg.Bool _
+  | Arg.Set _
+  | Arg.Clear _
+  | Arg.String _
+  | Arg.Set_string _
+  | Arg.Int _
+  | Arg.Set_int _
+  | Arg.Float _
+  | Arg.Set_float _
+  | Arg.Tuple _
+  | Arg.Symbol _
+  | Arg.Rest _ -> invalid_arg "add_unit_spec: not a unit argument"
 ;;
 
 let add_report_spec =
@@ -102,11 +118,13 @@ and add_debug_spec =
   add_unit_spec (fun spec -> debug_specs := spec :: !debug_specs)
 ;;
 
-let add_report ({spec = s} as t) = add t; add_report_spec s
-and add_debug ({spec = s} as t) = add t; add_debug_spec s;;
+let add_report t = add t; add_report_spec t.spec
+and add_debug t = add t; add_debug_spec t.spec;;
 
-let add_user_report ({spec = s}, _ as opt) = add_user opt; add_report_spec s
-and add_user_debug ({spec = s}, _ as opt) = add_user opt; add_debug_spec s;;
+let add_user_report (t, _ as opt) =
+  add_user opt; add_report t
+and add_user_debug (t, _ as opt) =
+  add_user opt; add_debug t;;
 
 let alias_doc k = Printf.sprintf "  Alias for %s.\n" k;;
 
@@ -114,24 +132,25 @@ let rec alias_opt popt k =
   match popt with
   | Regular t -> Regular {t with key = k; doc = alias_doc t.key}
   | User (t, s) -> User ({t with key = k; doc = alias_doc t.key}, s)
-  | Alias (popt, k) -> alias_opt popt k;;
+  | Alias (popt, k) -> alias_opt popt k
+;;
 
 let rec add_advanced = function
-| Plain (Regular t) -> add t
-| Report (Regular t) -> add_report t
-| Debug (Regular t) -> add_debug t
-| Plain (User (t, s)) -> add_user (t, s)
-| Report (User (t, s)) -> add_user_report (t, s)
-| Debug (User (t, s)) -> add_user_debug (t, s)
-| Plain (Alias (popt, k)) ->
-    add_advanced (Plain popt);
-    add_advanced (Plain (alias_opt popt k))
-| Report (Alias (popt, k)) ->
-    add_advanced (Report popt);
-    add_advanced (Report (alias_opt popt k))
-| Debug (Alias (popt, k)) ->
-    add_advanced (Debug popt);
-    add_advanced (Debug (alias_opt popt k))
+  | Plain (Regular t) -> add t
+  | Report (Regular t) -> add_report t
+  | Debug (Regular t) -> add_debug t
+  | Plain (User (t, s)) -> add_user (t, s)
+  | Report (User (t, s)) -> add_user_report (t, s)
+  | Debug (User (t, s)) -> add_user_debug (t, s)
+  | Plain (Alias (popt, k)) ->
+      add_advanced (Plain popt);
+      add_advanced (Plain (alias_opt popt k))
+  | Report (Alias (popt, k)) ->
+      add_advanced (Report popt);
+      add_advanced (Report (alias_opt popt k))
+  | Debug (Alias (popt, k)) ->
+      add_advanced (Debug popt);
+      add_advanced (Debug (alias_opt popt k))
 ;;
 
 let add_advanced_all = List.iter add_advanced;;
@@ -141,10 +160,12 @@ let add_bi (popt, k) = add_advanced (Plain (Alias (Regular popt, k)));;
 let add_bi_all = List.iter add_bi;;
 
 let add_report_bi (popt, k) = add_advanced (Report (Alias (Regular popt, k)))
-and add_debug_bi (popt, k) = add_advanced (Debug (Alias (Regular popt, k)));;
+and add_debug_bi (popt, k) = add_advanced (Debug (Alias (Regular popt, k)))
+;;
 
 let add_report_bi_all = List.iter add_report_bi
-and add_debug_bi_all = List.iter add_debug_bi;;
+and add_debug_bi_all = List.iter add_debug_bi
+;;
 
 let add_user_bi ((t, s), k) = add_advanced (Plain (Alias (User (t, s), k)));;
 
@@ -153,10 +174,12 @@ let add_user_bi_all = List.iter add_user_bi;;
 let add_user_report_bi ((t, s), k) =
   add_advanced (Report (Alias (User (t, s), k)))
 and add_user_debug_bi ((t, s), k) =
-  add_advanced (Debug (Alias (User (t, s), k)));;
+  add_advanced (Debug (Alias (User (t, s), k)))
+;;
 
 let add_user_report_bi_all = List.iter add_user_report_bi
-and add_user_debug_bi_all = List.iter add_user_debug_bi;;
+and add_user_debug_bi_all = List.iter add_user_debug_bi
+;;
 
 add_bi_all [
   {key = "--report";
@@ -168,7 +191,8 @@ add_bi_all [
    spec = Arg.Unit launch_debug_specs;
    doc = "  Turn on all declared debug command options. Default is off."},
   "-d";
-];;
+]
+;;
 
 let rec assoc3 x l =
   match l with
@@ -228,14 +252,18 @@ let parse_user () =
     loop ();
     Array.of_list (List.rev !arg_list) in
   let current = ref 0 in
-  Arg.parse_argv ~current: current argv user_options ignore "";;
+  Arg.parse_argv ~current: current argv user_options ignore ""
+;;
 
 (* A special case: flag options *)
 let flag init option_name message =
   let r = ref init in
   let opt =
-    {key = option_name;
-     spec = (if init then Arg.Clear r else Arg.Set r);
-     doc = message} in
+    {
+      key = option_name;
+      spec = (if init then Arg.Clear r else Arg.Set r);
+      doc = message;
+    } in
   add opt;
-  r;;
+  r
+;;

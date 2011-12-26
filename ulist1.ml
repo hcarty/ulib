@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ulist1.ml,v 1.2 2007-07-13 12:53:27 fclement Exp $ *)
+(* $Id: ulist1.ml,v 1.3 2009-12-12 17:40:15 fclement Exp $ *)
 
 type 'a list1 = 'a * 'a list;;
 
@@ -34,7 +34,7 @@ let replace_by_list i l1 l2 =
 
 let map f (h, l) = (f h, List.map f l);;
 
-let mapi f (h, l) = (f 0 h, Ulist.mapi (fun i -> f (i + 1)) l);;
+let map_i f (h, l) = (f 0 h, Ulist.map_i (fun i -> f (i + 1)) l);;
 
 let iter f (h, l) = f h; List.iter f l;;
 

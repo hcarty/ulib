@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: upervasives.ml,v 1.3 2008-05-26 13:35:58 fclement Exp $ *)
+(* $Id: upervasives.ml,v 1.4 2011-01-28 14:18:48 fclement Exp $ *)
 
 (** Extensions to the initially opened module. *)
 
@@ -37,6 +37,8 @@ let split n k =
     loop (q :: accu) (s + 1) (nn - q) (kk - 1) in
   loop [] 0 n k;;
 
+let psplit n k = List.filter (fun i -> i > 0) (split n k);;
+
 (** {6 Floating-point arithmetic} *)
 
 let round_pos x = int_of_float (x +. 0.5);;
@@ -59,3 +61,15 @@ let float_of_bit_string s =
     if j < 0 then accu else
     loop (Int64.add (Int64.shift_left accu 8) (int64_of_char s.[j])) (j - 1) in
   Int64.float_of_bits (loop (int64_of_char s.[7]) 6);;
+
+(** {6 Input/output} *)
+
+let open_append fname =
+  let mode = [Open_wronly; Open_append; Open_creat; Open_text;] in
+  let perm = 0o644 in
+  open_out_gen mode perm fname;;
+
+let open_append_bin fname =
+  let mode = [Open_wronly; Open_append; Open_creat; Open_binary;] in
+  let perm = 0o644 in
+  open_out_gen mode perm fname;;

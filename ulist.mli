@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ulist.mli,v 1.2 2007-07-13 12:53:27 fclement Exp $ *)
+(* $Id: ulist.mli,v 1.3 2009-06-22 09:11:29 fclement Exp $ *)
 
 (** More list operations. *)
 
@@ -54,8 +54,8 @@ val rev_insert : int -> 'a list -> 'a list -> 'a list;;
 
 (** {6 Iterators} *)
 
-val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list;;
-(** [mapi f l] returns the same result as {!List.map},
+val map_i : (int -> 'a -> 'b) -> 'a list -> 'b list;;
+(** [map_i f l] returns the same result as {!List.map},
    but the function is applied to the index of the element as first argument,
    and the element itself as second argument.
    Elements of the list [l] are implicitely numbered from 0 to
@@ -64,10 +64,20 @@ val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list;;
    Notice that this could mean that you actually need an array, not a list!
    Hence, you might think of using {!Array.mapi}... *)
 
-val rev_mapi : (int -> 'a -> 'b) -> 'a list -> 'b list;;
-(** [rev_mapi f l] gives the same result as
-   {!List.rev} [(]{!mapi} [f l)], but is tail-recursive
+val rev_map_i : (int -> 'a -> 'b) -> 'a list -> 'b list;;
+(** [rev_map_i f l] gives the same result as
+   {!List.rev} [(]{!map_i} [f l)], but is tail-recursive
    and more efficient. *)
+
+val fold_left_i : (int -> 'a -> 'b -> 'a) -> 'a -> 'b list -> 'a;;
+(** [fold_left_i f l] returns the same result as {!List.map},
+   but the function is applied to the index of the element as first argument,
+   and the element itself as second argument.
+   Elements of the list [l] are implicitely numbered from 0 to
+   [(] {!List.length} [l) - 1].
+   
+   Notice that this could mean that you actually need an array, not a list!
+   Hence, you might think of using {!Array.mapi}... *)
 
 (** {6 Association lists} *)
 

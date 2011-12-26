@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: umatrix.mli,v 1.3 2007-09-28 08:36:07 fclement Exp $ *)
+(* $Id: umatrix.mli,v 1.4 2010-07-05 08:31:09 weis Exp $ *)
 
 (** Matrix operations.
 
@@ -105,7 +105,7 @@ val init : int -> int -> (int -> int -> 'a) -> 'a t;;
 
 val printer : 'a Uprinter.t -> 'a t Uprinter.t;;
 (** [printer print ob m] prints the matrix [m] on the output buffer [ob]
-    by evaluating [My_array.line_printer print ob] on all lines of the
+    by evaluating [Uarray.line_printer print ob] on all lines of the
     matrix. *)
 
 val compact_printer : 'a Uprinter.t -> 'a t Uprinter.t;;
@@ -285,9 +285,9 @@ val subiter : ('a -> unit) -> 'a t -> int -> int -> int -> int -> unit;;
 (** [subiter f m oi li oj lj] applies function [f] in turn to the
    elements number [(oi, oj)] to [(oi + li - 1, oj + lj - 1)] of matrix [m].
    It is equivalent to
-   {!My_array.subiter}[ f m.(oi) oj lj;]
-   {!My_array.subiter}[ f m.(oi + 1) oj lj; ...;]
-   {!My_array.subiter}[ f m.(oi + li - 1) oj lj; ()]. *)
+   {!Uarray.subiter}[ f m.(oi) oj lj;]
+   {!Uarray.subiter}[ f m.(oi + 1) oj lj; ...;]
+   {!Uarray.subiter}[ f m.(oi + li - 1) oj lj; ()]. *)
 
 val subiterij :
     (int -> int -> 'a -> unit) -> 'a t -> int -> int -> int -> int -> unit;;
@@ -300,16 +300,16 @@ val subiterij :
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit;;
 (** [iter2 f m1 m2] applies function [f] in turn to all the elements
    of [m1] and [m2]. It is equivalent to
-   {!My_array.iter2}[ f m1.(0) m2.(0); ]{!My_array.iter2}[ f m1.(1) m2.(1);
-   ...; ]{!My_array.iter2}[ f m1.(ni - 1) m2.(ni - 1); ()],
+   {!Uarray.iter2}[ f m1.(0) m2.(0); ]{!Uarray.iter2}[ f m1.(1) m2.(1);
+   ...; ]{!Uarray.iter2}[ f m1.(ni - 1) m2.(ni - 1); ()],
    where [ni] is the first dimension of matrices [m1] and [m2]. *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t;;
 (** [map2 f m1 m2] applies function [f] to all the elements of [m1]
    and [m2], and builds a matrix with the results returned by [f]:
-   [\[| ]{!My_array.map2}[ f m1.(0) m2.(0); ]
-   {!My_array.map2}[ f m1.(1) m2.(1); ...; ]
-   {!My_array.map2}[ f m1.(ni - 1) m2.(ni - 1) |\]],
+   [\[| ]{!Uarray.map2}[ f m1.(0) m2.(0); ]
+   {!Uarray.map2}[ f m1.(1) m2.(1); ...; ]
+   {!Uarray.map2}[ f m1.(ni - 1) m2.(ni - 1) |\]],
    where [ni] is the first dimension of matrices [m1] and [m2]. *)
 
 val iterij2 : (int -> int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit;;
@@ -324,16 +324,16 @@ val mapij2 : (int -> int -> 'a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t;;
 
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b t -> 'c t -> 'a;;
 (** [fold_left2 f x m1 m2] computes
-   {!My_array.fold_left2}[ f (... (]{!My_array.fold_left2}[ f
-   (]{!My_array.fold_left2}[ f x m1.(0) bm2.(0)) m1.(1) m2.(1)) ...)
+   {!Uarray.fold_left2}[ f (... (]{!Uarray.fold_left2}[ f
+   (]{!Uarray.fold_left2}[ f x m1.(0) bm2.(0)) m1.(1) m2.(1)) ...)
    m1.(ni - 1) m2.(ni - 1)],
    where [ni] is the first dimension of the matrices [m1] and [m2]. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c;;
 (** [fold_right2 f m1 m2 x] computes
-   {!My_array.fold_right2}[ f m1.(0) m2.(0)
-   (]{!My_array.fold_right2}[ f m1.(1) m2.(1) ( ...
-   (]{!My_array.fold_right2}[ f m1.(ni - 1) m2.(ni - 1) x) ...))],
+   {!Uarray.fold_right2}[ f m1.(0) m2.(0)
+   (]{!Uarray.fold_right2}[ f m1.(1) m2.(1) ( ...
+   (]{!Uarray.fold_right2}[ f m1.(ni - 1) m2.(ni - 1) x) ...))],
    where [ni] is the first dimension of the matrices [m1] and [m2]. *)
 
 (** {6 Specific applications} *)

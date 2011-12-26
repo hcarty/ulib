@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ulist1.mli,v 1.1 2007-04-02 17:48:29 weis Exp $ *)
+(* $Id: ulist1.mli,v 1.2 2009-12-12 17:40:15 fclement Exp $ *)
 
 (** The module defining nonempty lists. *)
 
@@ -54,8 +54,8 @@ val map : ('a -> 'b) -> 'a list1 -> 'b list1
    and builds the list [[f a1; ...; f an]]
    with the results returned by [f].  Not tail-recursive. *)
 
-val mapi : (int -> 'a -> 'b) -> 'a list1 -> 'b list1;;
-(** [mapi f l] returns the same result as {!map},
+val map_i : (int -> 'a -> 'b) -> 'a list1 -> 'b list1;;
+(** [map_i f l] returns the same result as {!map},
    but the function is applied to the index of the element as first argument,
    and the element itself as second argument.
    Elements of the list [l] are implicitely numbered from 0 to

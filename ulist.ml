@@ -13,7 +13,7 @@
 (*                                                                     *)
 (***********************************************************************)
 
-(* $Id: ulist.ml,v 1.2 2007-07-13 12:53:27 fclement Exp $ *)
+(* $Id: ulist.ml,v 1.3 2009-06-22 09:11:29 fclement Exp $ *)
 
 (** Local definitions to be removed if inserted into the official List module *)
 
@@ -62,21 +62,28 @@ let rev_insert i l1 l2 =
 
 (** {6 Iterators} *)
 
-let mapi f l =
+let map_i f l =
   let rec loop i = function
   | [] -> []
   | x :: l -> f i x :: loop (i + 1) l in
   loop 0 l;;
 
-let rev_mapi f l =
+let rev_map_i f l =
   let rec loop accu i = function
     | [] -> accu
     | x :: l -> loop (f i x :: accu) (i + 1) l in
   loop [] 0 l;;
 
-let replace i0 x0 l = mapi (fun i x -> if i <> i0 then x else x0) l;;
+let replace i0 x0 l = map_i (fun i x -> if i <> i0 then x else x0) l;;
 
-let rev_replace i0 x0 l = rev_mapi (fun i x -> if i <> i0 then x else x0) l;;
+let rev_replace i0 x0 l = rev_map_i (fun i x -> if i <> i0 then x else x0) l;;
+
+let fold_left_i f accu l =
+  let rec loop i accu = function
+  | [] -> accu
+  | x :: l -> loop (i + 1) (f i accu x) l in
+  loop 0 accu l
+;;
 
 (** {6 Association lists} *)
 
