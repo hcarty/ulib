@@ -1,1 +1,36 @@
-<{uaref,uarray,uarray1_with_c_layout,uarray1_with_fortran_layout,uarray2_with_c_layout,uarray2_with_fortran_layout,ubuffer,ucommand_option,ulist1,ulist,umatrix,upervasives,uprinter,ustring,uunix,uversionning}.cmx>: for-pack(Ulib)
+# OASIS_START
+# DO NOT EDIT (digest: cc06ac736cd6b65a3f98ae220a0a3dde)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library ulib
+"src/ulib.cmxs": use_ulib
+"src/uaref.cmx": for-pack(Ulib)
+"src/uarray.cmx": for-pack(Ulib)
+"src/uarray1_with_c_layout.cmx": for-pack(Ulib)
+"src/uarray1_with_fortran_layout.cmx": for-pack(Ulib)
+"src/uarray2_with_c_layout.cmx": for-pack(Ulib)
+"src/uarray2_with_fortran_layout.cmx": for-pack(Ulib)
+"src/ubuffer.cmx": for-pack(Ulib)
+"src/ucommand_option.cmx": for-pack(Ulib)
+"src/ulist1.cmx": for-pack(Ulib)
+"src/ulist.cmx": for-pack(Ulib)
+"src/umatrix.cmx": for-pack(Ulib)
+"src/upervasives.cmx": for-pack(Ulib)
+"src/uprinter.cmx": for-pack(Ulib)
+"src/ustring.cmx": for-pack(Ulib)
+"src/uunix.cmx": for-pack(Ulib)
+"src/uversionning.cmx": for-pack(Ulib)
+<src/*.ml{,i}>: pkg_bigarray
+<src/*.ml{,i}>: pkg_unix
+# OASIS_STOP

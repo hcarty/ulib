@@ -1,3 +1,5 @@
+# OASIS_START
+# DO NOT EDIT (digest: 9833dd1d9428af41d137fbf72c51b470)
 Uaref
 Uarray
 Uarray1_with_c_layout
@@ -14,4 +16,4 @@ Uprinter
 Ustring
 Uunix
 Uversionning
-
+# OASIS_STOP

@@ -1,32 +1,38 @@
-# The target library's name
-LIBRARY = ulib
+# OASIS_START
+# DO NOT EDIT (digest: bc1e05bfc8b39b664f29dae8dbd3ebbb)
 
-# Commands to use for ocamlbuild and ocamlfind (in case they are not in $PATH)
-OCAMLBUILD = ocamlbuild -tag debug
-OCAMLFIND = ocamlfind
+SETUP = ocaml setup.ml
 
-# Where ocamlbuild put the build files
-BUILD_DIR = _build/
+build: setup.data
+	$(SETUP) -build $(BUILDFLAGS)
 
-# Default to building bytecoode and native code libraries
-all: byte opt
-byte:
-	$(OCAMLBUILD) $(LIBRARY).cma
-opt:
-	$(OCAMLBUILD) $(LIBRARY).cmxa
+doc: setup.data build
+	$(SETUP) -doc $(DOCFLAGS)
 
-# (Un)Installation using ocamlfind
-install:
-	$(OCAMLFIND) install $(LIBRARY) \
-	    META \
-	    $(BUILD_DIR)${LIBRARY}.cmi \
-	    $(BUILD_DIR)${LIBRARY}.cma \
-	    $(BUILD_DIR)${LIBRARY}.cmxa \
-	    $(BUILD_DIR)${LIBRARY}.a
-uninstall:
-	$(OCAMLFIND) remove $(LIBRARY)
+test: setup.data build
+	$(SETUP) -test $(TESTFLAGS)
 
-# Clean up the build process using ocamlbuild
-clean:
-	$(OCAMLBUILD) -clean
+all: 
+	$(SETUP) -all $(ALLFLAGS)
 
+install: setup.data
+	$(SETUP) -install $(INSTALLFLAGS)
+
+uninstall: setup.data
+	$(SETUP) -uninstall $(UNINSTALLFLAGS)
+
+reinstall: setup.data
+	$(SETUP) -reinstall $(REINSTALLFLAGS)
+
+clean: 
+	$(SETUP) -clean $(CLEANFLAGS)
+
+distclean: 
+	$(SETUP) -distclean $(DISTCLEANFLAGS)
+
+setup.data:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+.PHONY: build doc test all install uninstall reinstall clean distclean configure
+
+# OASIS_STOP

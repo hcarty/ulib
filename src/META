@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: 1d981fc38427db42fa2f7b04a3912083)
+version = "1.0"
+description = "Standard library extensions from the OCaml CVS tree"
+requires = "bigarray unix"
+archive(byte) = "ulib.cma"
+archive(byte, plugin) = "ulib.cma"
+archive(native) = "ulib.cmxa"
+archive(native, plugin) = "ulib.cmxs"
+exists_if = "ulib.cma"
+# OASIS_STOP
+

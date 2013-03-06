@@ -1,18 +1,34 @@
-OASISFormat: 0.2
+OASISFormat: 0.3
 Name:        Ulib
-Version:     1.0~oasis1
+Version:     1.0
 Synopsis:    Standard library extensions from the OCaml CVS tree
 Authors:     Francois Clement, Pierre Weis, et al.
 License:     BSD3
 LicenseFile: LICENSE.in
-BuildType:   custom (0.2)
-InstallType: custom (0.2)
-BuildTools:  make
-
-XCustomBuild: make all
-XCustomInstall: make install
-XCustomUninstall: make uninstall
+Plugins:     META (0.3), StdFiles (0.3), DevFiles (0.3)
+XStdFilesAUTHORS: false
+XStdFilesREADME: false
 
 Library "ulib"
-  Path: .
+  Path:           src
+  BuildTools:     ocamlbuild
+  BuildDepends:   bigarray, unix
+  Pack:           true
+  Modules:        Uaref,
+                  Uarray,
+                  Uarray1_with_c_layout,
+                  Uarray1_with_fortran_layout,
+                  Uarray2_with_c_layout,
+                  Uarray2_with_fortran_layout,
+                  Ubuffer,
+                  Ucommand_option,
+                  Ulist1,
+                  Ulist,
+                  Umatrix,
+                  Upervasives,
+                  Uprinter,
+                  Ustring,
+                  Uunix,
+                  Uversionning
+  CompiledObject: best
 
