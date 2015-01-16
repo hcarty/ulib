@@ -1,8 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: cc06ac736cd6b65a3f98ae220a0a3dde)
-# Ignore VCS directories, you can use the same kind of rule outside 
-# OASIS_START/STOP if you want to exclude directories that contains 
+# DO NOT EDIT (digest: 83da6110e9add11c3029f417d2156628)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
+true: annot, bin_annot
 <**/.svn>: -traverse
 <**/.svn>: not_hygienic
 ".bzr": -traverse
@@ -31,6 +32,6 @@
 "src/ustring.cmx": for-pack(Ulib)
 "src/uunix.cmx": for-pack(Ulib)
 "src/uversionning.cmx": for-pack(Ulib)
-<src/*.ml{,i}>: pkg_bigarray
-<src/*.ml{,i}>: pkg_unix
+<src/*.ml{,i,y}>: pkg_bigarray
+<src/*.ml{,i,y}>: pkg_unix
 # OASIS_STOP

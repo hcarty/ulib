@@ -1,11 +1,11 @@
-OASISFormat: 0.3
+OASISFormat: 0.4
 Name:        Ulib
 Version:     1.0
 Synopsis:    Standard library extensions from the OCaml CVS tree
 Authors:     Francois Clement, Pierre Weis, et al.
-License:     BSD3
+License:     BSD-3-clause
 LicenseFile: LICENSE.in
-Plugins:     META (0.3), StdFiles (0.3), DevFiles (0.3)
+Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
 XStdFilesAUTHORS: false
 XStdFilesREADME: false
 
